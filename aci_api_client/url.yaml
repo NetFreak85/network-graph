@@ -1,0 +1,286 @@
+##############################################################################################
+# File that will store all the URL required by the program to get information from the APICs #
+##############################################################################################
+
+###############################
+# ACI Componets for if checks #
+###############################
+COMPONENTS:
+
+    # Switch Spine Model
+    SPINE: "spine"
+
+    # Switch Leaf Model
+    LEAF: "leaf"
+
+    # Cisco Application Policy Infrastructure Controller (APIC)
+    CONTROLLER: "controller"
+
+    # Second name for the Cisco Application Policy Infrastructure Controller (APIC)
+    APIC: "apic"
+
+#######################################
+# URLs Tree, separated by device type #
+#######################################
+URLs:
+
+    # URLs in the APIC Scope
+    APIC:
+
+        # URL to retrieve all the information related to APIC Cluster Health status
+        APIC_CLUSTER_AS_SEEN_BY_NODE:  https://%s/api/node/mo/topology/pod-1/node-%s.json?query-target=subtree&target-subtree-class=infraSnNode&query-target-filter=and(ne(infraSnNode.apicMode,"standby"),ne(infraSnNode.cntrlSbstState,"erased"),ne(infraSnNode.mbSn,""))&query-target=subtree&target-subtree-class=infraSnNode,infraWiNode
+
+        # URL to retrieve all the Physical interfaces detected in the APIC
+        APIC_PHYSICAL_INTERFACES: https://%s/api/node/mo/topology/pod-1/node-%s/sys.json?query-target=children&target-subtree-class=cnwPhysIf
+
+        # URL to retrieve all the Aggregated interfaces detected in the APIC
+        APIC_AGGREGATED_INTERFACES: https://%s/api/node/mo/topology/pod-1/node-%s/sys.json?query-target=subtree&target-subtree-class=l3EncRtdIf
+
+        # URL to retrieve all the information related to PSUs in the APICs
+        APIC_POWER_SUPPLY: https://%s/api/node/mo/topology/pod-1/node-%s.json?query-target=subtree&target-subtree-class=eqptPsu
+
+        # URL to retrieve the PSU voltage consumition in the APIC
+        APIC_POWER_SUPPLY_CONSUME: https://%s/api/node/mo/topology/pod-1/node-%s/sys/ch/psuslot-%s/psu.json?rsp-subtree-include=stats&rsp-subtree-class=eqptPsPowerHist15min
+
+        # URL to retrieve all the NTP information detected in the APICs
+        APIC_NTP: https://%s/api/node/class/topology/pod-1/node-%s/datetimeNtpq.json
+
+        # URL to retrieve all the FAN information detected in the APICs
+        APIC_FAN: https://%s/api/node/mo/topology/pod-1/node-%s.json?query-target=subtree&target-subtree-class=eqptFan&order-by=eqptFan.id|asc
+
+        # URL to retrieve all the Sensors information detected in the APICs
+        APIC_SENSORS: https://%s/api/node/mo/topology/pod-1/node-%s.json?query-target=subtree&target-subtree-class=eqptSensor
+
+        # URL to retrieve all the Memory Slots detecteds in the APICs
+        APIC_MEMORY_SLOTS: https://%s/api/node/mo/topology/pod-1/node-%s.json?query-target=subtree&target-subtree-class=eqptDimm
+
+        # URL to retrieve all the File System information detected in the APICs
+        APIC_FILE_SYSTEM: https://%s/api/node/class/topology/pod-1/node-%s/eqptStorage.json
+
+        # URL to retrieve all the Containers information detected in the APICs
+        APIC_CONTAINER: https://%s/api/node/class/topology/pod-1/node-%s/procContainer.json
+
+        # URL to retrieve all the Processes information detected in the APICs
+        APIC_PROCESSES: https://%s/api/node/class/topology/pod-1/node-%s/procEntry.json?order-by=procEntry.id|asc
+
+        # URL to retrieve all the RAM info in the APICs
+        APIC_RAM: https://%s/api/node/class/procEntity.json?&order-by=procEntity.dn|asc
+
+        # URL to retrieve all the CPU info in the APICs
+        APIC_CPU: https://%s/api/node/class/procCPU5min.json?order-by=procCPU5min.dn|asc
+
+        # URL to retrieve Fabric Health Status
+        APIC_FABRIC_HEALTH: https://%s/api/node/mo/topology/HDfabricOverallHealth5min-0.json
+
+        # URL to retrieve Fabric License Status
+        APIC_LICENSE: https://%s/api/node/mo/licensecont/manager.json
+
+    # URLs in the Fabric Scope
+    FABRIC_INFO:
+
+        # URL to get the Numbers of controllers in the fabric
+        NUM_CONTROLLERS: https://%s/api/node/mo/topology/pod-1/node-1.json?query-target=children&target-subtree-class=infraCont
+
+        # URL to get the Numbers of nodes in the Fabrics and its IDs
+        NUM_NODES_PLUS_IDS: https://%s/api/node/class/fabricNode.json?&order-by=fabricNode.id
+
+        # URL to obtain the Fabric Name
+        FABRIC_NAME: https://%s/api/node/mo/topology/pod-1/node-1.json?query-target=children&target-subtree-class=infraCont
+
+        # URL to retrieve fabric name
+        FABRIC_NAME_SECOND_OPTION: https://%s/api/node/class/infraCont.json?&order-by=infraCont.modTs|desc
+
+    # URLs in the Token Scope
+    TOKEN_INFO:
+
+        # URL for token generation in ACI version 4
+        TOKEN_4: https://%s/api/mo/aaaLogin.json
+
+        # URL for token generation in ACI version 5
+        TOKEN_5: https://%s/api/aaaLogin.json
+
+        # URL for token refresh
+        TOKEN_REFRESH: https://%s/api/node/class//api/aaaRefresh.xml.xml?
+
+        # URL for logout
+        TOKEN_LOGOUT: https://%s/api/aaaLogout.json
+
+    # URL in the Chassis Scope
+    CHASSIS:
+
+        # Chassis URL Scope
+        CHASSIS_INFO:
+
+            # URL that will provide all the information about the Chasis
+            CHASSIS: https://%s/api/node/mo/topology/pod-1/node-%s/sys/ch.json
+
+            # URL to retrieve Node Info
+            NODE_INFO:  https://%s/api/node/mo/topology/pod-1/node-%s/sys.json?query-target=self
+
+            # URL to retrieve Node SSD Info
+            NODE_DISK_INFO: https://%s/api/node/mo/topology/pod-1/node-%s/sys/ch/supslot-1/sup/flash.json?query-target=self
+
+            # URL to retrieve all the Fautls detected in the Node
+            NODE_FAULTS:  https://%s/api/node/class/topology/pod-1/node-%s/faultSummary.json
+
+            # URL to retrieve all the faults detected in the APICs
+            APIC_FAULTS: https://%s/api/node/class/faultSummary.json
+
+        # Power Supply URL Scope
+        POWER_SUPPLY_INFO:
+
+            # URL that will provide all the information about the Power Supply Units
+            POWER_SUPPLY: https://%s/api/node/mo/topology/pod-1/node-%s/sys/ch.json?query-target=subtree&target-subtree-class=eqptPsu
+
+            # URL that will provide all the watts provided by the PSU in the Power Supply Unit
+            POWER_SUPPLY_PROVIDED: https://%s/api/node/mo/topology/pod-1/node-%s/sys/ch/psuslot-%s/psu.json?rsp-subtree-include=stats&rsp-subtree-class=eqptPsPowerHist5min
+
+        # Supervisor URL Scope
+        SUPERVISOR_INFO:
+
+            # URL that will provide all the information about the Supervisors
+            SUPERVISOR: https://%s/api/node/mo/topology/pod-1/node-%s.json?query-target=subtree&target-subtree-class=eqptSupC
+
+        # Fabric Module URL Scope
+        FABRIC_MODULE_INFO:
+
+            # URL that will provide all the information about the Fabrics Modules
+            FABRIC_MODULE: https://%s/api/node/mo/topology/pod-1/node-%s.json?query-target=subtree&target-subtree-class=eqptFC
+
+        # System Controller URL Scope
+        SYSTEM_CONTROLLER_INFO:
+
+            # URL that will provide all the information about the System Controller
+            SYSTEM_CONTROLLER: https://%s/api/node/mo/topology/pod-1/node-%s/sys/ch.json?query-target=subtree&target-subtree-class=eqptSysC
+
+        # Linecard URL Scope
+        LINECARD_INFO:
+
+            # URL that will provide all the information about the Line Cards
+            LINECARDS: https://%s/api/node/mo/topology/pod-1/node-%s.json?query-target=subtree&target-subtree-class=eqptLC
+
+            # URL that will provide all the information related to the Interface
+            INTERFACE_STATUS: https://%s/api/node/mo/topology/pod-1/node-%s/sys/phys-[eth%s/%s].json?query-target=self
+
+            # URL that will provide all the information related to the Leaf (Num Interfaces, Interface Mode, etc.)
+            INTERFACE_LEAF_INFO: https://%s/api/node/class/topology/pod-1/node-%s/l1PhysIf.json
+
+            # URL that will provide all the information related to the Operational Interface Status
+            OPERATIONAL_INTERFACE_STATUS: https://%s/api/node/mo/topology/pod-1/node-%s/sys/phys-[eth%s/%s]/phys.json?query-target=self
+
+            # URL that will provide all the information related to the Error Counters in the Interface
+            OPERATIONAL_INTERFACE_COUNTERS: https://%s/api/node/mo/topology/pod-1/node-%s/sys/phys-[%s].json?query-target=children&target-subtree-class=rmonEtherStats
+
+            # URL that will provide all the information related to the SFP
+            INTERFACE_SFP_DETAILS: https://%s/api/node/mo/topology/pod-1/node-%s/sys/phys-[eth%s/%s]/phys/fcot.json?query-target=self
+
+            # URL that will provide all the EPGs deployed in the interface
+            INTERFACE_EPG: https://%s/api/node/mo/topology/pod-1/node-%s/sys/phys-[eth%s/%s].json?rsp-subtree-include=full-deployment&target-node=all&target-path=l1EthIfToEPg
+
+            # URL that will provide all the available loopback interfaces detected in the Switch
+            INTERFACE_LOOPBACKS: https://%s/api/node/class/topology/pod-1/node-%s/l3LbRtdIf.json?rsp-subtree=children
+
+            # URL that will provide all the Loopback Details
+            LOOPBACK_DETAILS: https://%s/api/node/mo/topology/pod-1/node-%s/sys/ipv4/inst/dom-overlay-1/if-[%s].json?query-target=children
+
+    # URL in the File System Scope
+    FILE_SYSTEM:
+
+        # URL that will provide all the information related to the File Systems usage
+        FILE_SYSTEM: https://%s/api/node/class/topology/pod-1/node-%s/eqptcapacityFSPartition.json
+
+    # URLs in the Protocols Scope
+    PROTOCOLS:
+
+        # URLs in the IPv4 VRF Scope
+        IPV4_VRF:
+
+            # URL that will provide all the VRFs deployed in a node ID
+            IPv4_VRF: https://%s/api/node/mo/topology/pod-1/node-%s/sys/ipv4/inst.json?query-target=children
+
+            # URL that will provide all the information about the ARPs attached to the leaf per VRF based
+            IPv4_VRF_ARP: https://%s/api/node/mo/topology/pod-1/node-%s/sys/arp/inst/dom-%s/db-ip.json?query-target=children
+
+            # URL that will provide all the information about the IPv4 Routes per VRF based
+            IPv4_VRF_Routes: https://%s/api/node/mo/topology/pod-1/node-%s/sys/ipv4/inst/dom-%s.json?query-target=children&target-subtree-class=ipv4Route
+
+            # URL that will provide all the information about the IPv4 next hop based on a prefix
+            IPv4_VRF_Routes_NextHop: https://%s/api/node/mo/topology/pod-1/node-%s/sys/ipv4/inst/dom-%s/rt-[%s].json?query-target=children&target-subtree-class=ipv4Nexthop
+
+        # URLs in the CDP Scope
+        CDP:
+        
+            # URL that will provide all the interfaces with CDP Enable on the switch
+            CDP_INTERFACE: https://%s/api/node/mo/topology/pod-1/node-%s/sys/cdp/inst.json?query-target=children
+        
+            # URL that will provide all the CDP Neighbor detected on the switch
+            CDP_NEIGHBOR: https://%s/api/node/mo/topology/pod-1/node-%s/sys/cdp/inst.json?query-target=subtree&target-subtree-class=cdpAdjEp
+
+        # URLs in the LLDP Scope
+        LLDP:
+        
+            # URL that will provide all the interfaces with LLDP Enable on the switch
+            LLDP_INTERFACE: https://%s/api/node/class/topology/pod-1/node-%s/lldpIf.json?rsp-subtree=children&rsp-subtree-class=lldpIf,lldpAdjEp&rsp-subtree-include=required
+        
+            # URL that will provide all the LLDP Neighbor detected on the switch
+            LLDP_NEIGHBOR: https://%s/api/node/mo/topology/pod-1/node-%s/sys/lldp/inst/if-[%s].json?query-target=subtree&target-subtree-class=lldpAdjEp
+
+        # URLs in the ISIS Scope
+        ISIS:
+        
+            # URL that will provide all the ISIS Protocol information
+            ISIS_PROTOCOL: https://%s/api/node/mo/topology/pod-1/node-%s/sys/isis/inst-default/dom-overlay-1.json
+        
+            # URL that will provide all the ISIS Dynamic Tunnel Endpoint information
+            ISIS_DTE: https://%s/api/node/mo/topology/pod-1/node-%s/sys/isis/inst-default/dom-overlay-1.json?query-target=subtree&target-subtree-class=isisDTEp&order-by=isisDTEp.name|desc
+        
+            # URL that will provide all the ISIS Interfaces information
+            ISIS_INTERFACES: https://%s/api/node/mo/topology/pod-1/node-%s/sys/isis/inst-default/dom-overlay-1.json?query-target=subtree&target-subtree-class=isisIf&order-by=isisIf.name|desc
+        
+            # URL that will provide all the ISIS Neighbors information
+            ISIS_NEIGHBORS: https://%s/api/node/mo/topology/pod-1/node-%s/sys/isis/inst-default/dom-overlay-1.json?query-target=subtree&target-subtree-class=isisAdjEp&rsp-subtree=children&rsp-subtree-class=isisPeerIpAddr&order-by=isisAdjEp.name|desc
+        
+            # URL that will provide all the ISIS Routes
+            ISIS_ROUTES: https://%s/api/node/mo/topology/pod-1/node-%s/sys/isis/inst-default/dom-overlay-1.json?query-target=subtree&target-subtree-class=isisRoute
+        
+        # URLs in the COOP Scope
+        COOP:
+        
+            # URL that will provide all the COOP Domain information and adjacencies detected in the switch
+            COOP_DOMAIN_AND_ADJ: https://%s/api/node/mo/topology/pod-1/node-%s/sys/coop/inst/dom-overlay-1.json?query-target=subtree
+        
+            # URL that will provide all the COOP Domain information detected in the Fabric
+            COOP_DOMAIN_SPINE_SWITCH: https://%s/api/node/class/coopDom.json?&order-by=coopDom.modTs|desc
+        
+            # URL that will provide all the COOP VPC Database Information from the switch
+            VPC_DATABASE: https://%s/api/node/mo/topology/pod-1/node-%s/sys/coop/inst/dom-overlay-1.json?query-target=subtree&target-subtree-class=coopVpcRec
+        
+            # URL that will provide all the COOP VPC NODE REFERENCE from the switch
+            COOP_VPC_NODE_REF: https://%s/api/node/mo/topology/pod-1/node-%s/sys/coop/inst/dom-overlay-1/db-vpc/r-%s-r-1.json?query-target=children&target-subtree-class=coopVpcNodeRec
+        
+            # URL that will provide all the COOP Endpoint detected on the Spine Switch
+            COOP_ENDPOINTS: https://%s/api/node/mo/topology/pod-1/node-%s/sys/coop/inst/dom-overlay-1.json?query-target=subtree&target-subtree-class=coopEpRec&rsp-subtree=children&rsp-subtree-class=coopIpv4Rec,coopIpv6Rec&order-by=coopEpRec.name|desc
+
+        # URLs in the RIBv4 Scope    
+        RIBv4:
+
+            # URL that will provide all the Domains detected in the RIBv4 Switch Scope
+            RIBv4_DOMAINS: https://%s/api/node/mo/topology/pod-1/node-%s/sys/uribv4.json?query-target=children
+
+            # URL that will provide all the RIBv4 Routes per Domain Based
+            RIBv4_ROUTE: https://%s/api/node/mo/topology/pod-1/node-%s/sys/uribv4/dom-%s.json?query-target=subtree&target-subtree-class=uribv4Route            
+
+            # URL that will provide all the details about the RIBv4 Route
+            RIBv4_ROUTE_DETAILS: https://%s/api/node/mo/topology/pod-1/node-%s/sys/uribv4/dom-%s/db-rt/rt-[%s].json?query-target=children
+
+    # URLs in the Tenant Scope
+    TENANT:
+
+        # URL that will provide all the Tenants deployed in the Fabric
+        TENANT_INFO: https://%s/api/node/class/fvTenant.json
+
+        # URL that will provide all the Aplication Profiles deployed in the Fabric
+        TENANT_AP: https://%s/api/node/mo/uni/tn-%s.json?query-target=children&target-subtree-class=fvAp&rsp-subtree=full&rsp-subtree-class=tagAliasInst
+
+        # Full subtree query for all tenant objects
+        TENANT_FULL_SUBTREE: https://%s/api/node/class/fvTenant.json?query-target=subtree&rsp-subtree=full
